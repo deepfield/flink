@@ -56,7 +56,7 @@ public class ZooKeeperLeaderRetrievalService implements LeaderRetrievalService, 
 	private final CuratorFramework client;
 
 	/** Curator recipe to watch changes of a specific ZooKeeper node. */
-	private final NodeCache cache;
+	private NodeCache cache;
 
 	private final String retrievalPath;
 
@@ -192,6 +192,14 @@ public class ZooKeeperLeaderRetrievalService implements LeaderRetrievalService, 
 				break;
 			case RECONNECTED:
 				LOG.info("Connection to ZooKeeper was reconnected. Leader retrieval can be restarted.");
+				try {
+					cache.close();
+					cache = new NodeCache(client, retrievalPath);
+					cache.getListenable().addListener(this);
+					cache.start();
+				} catch (Exception e) {
+					leaderListener.handleError(e);
+				}
 				break;
 			case LOST:
 				LOG.warn("Connection to ZooKeeper lost. Can no longer retrieve the leader from " +
