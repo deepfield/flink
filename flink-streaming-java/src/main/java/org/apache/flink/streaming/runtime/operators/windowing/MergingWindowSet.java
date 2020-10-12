@@ -218,7 +218,9 @@ public class MergingWindowSet<W extends Window> {
 
 		// the new window created a new, self-contained window without merging
 		if (mergeResults.isEmpty() || (resultWindow.equals(newWindow) && !mergedNewWindow)) {
-			this.mapping.put(resultWindow, resultWindow);
+			if (!this.mapping.containsKey(resultWindow)) {
+				this.mapping.put(resultWindow, resultWindow);
+			}
 		}
 
 		return resultWindow;
