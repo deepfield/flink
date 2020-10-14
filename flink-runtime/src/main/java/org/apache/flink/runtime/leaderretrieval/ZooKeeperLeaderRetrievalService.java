@@ -56,7 +56,7 @@ public class ZooKeeperLeaderRetrievalService implements LeaderRetrievalService, 
 	private final CuratorFramework client;
 
 	/** Curator recipe to watch changes of a specific ZooKeeper node. */
-	private final NodeCache cache;
+	private NodeCache cache;
 
 	private final String retrievalPath;
 
@@ -192,6 +192,30 @@ public class ZooKeeperLeaderRetrievalService implements LeaderRetrievalService, 
 				break;
 			case RECONNECTED:
 				LOG.info("Connection to ZooKeeper was reconnected. Leader retrieval can be restarted.");
+				synchronized (lock) {
+					if (running) {
+						try {
+							// Close may raise an exception. I'm not sure how bad it is to not
+							// handle. I think it might leave a watch behind? Not fully sure.
+							cache.close();
+						} catch (Exception e) {
+							leaderListener.handleError(e);
+						}
+							cache = new NodeCache(client, retrievalPath);
+							cache.getListenable().addListener(this);
+						try {
+							// Start may raise an exception. I'm pretty sure it won't raise an
+							// exception if it didn't raise it the first time it was called? There
+							// is a chance that it will actually fail to start watching the znode.
+							// I don't get the impression that's the case, but it is possible. If it
+							// does fail to start watching the znode, then we will stall on leader
+							// retrieval. This isn't any worse than we were before.
+							cache.start();
+						} catch (Exception e) {
+							leaderListener.handleError(e);
+						}
+					}
+				}
 				break;
 			case LOST:
 				LOG.warn("Connection to ZooKeeper lost. Can no longer retrieve the leader from " +
