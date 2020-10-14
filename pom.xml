@@ -108,6 +108,7 @@ under the License.
 		<akka.version>2.5.21</akka.version>
 		<java.version>1.8</java.version>
 		<slf4j.version>1.7.15</slf4j.version>
+		<logback.version>1.2.3</logback.version>
 		<log4j.version>2.12.1</log4j.version>
 		<!-- Overwrite default values from parent pom.
 			 Intellij is (sometimes?) using those values to choose target language level
@@ -448,6 +449,24 @@ under the License.
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-1.2-api</artifactId>
 				<version>${log4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>log4j-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
 			</dependency>
 
 			<dependency>
