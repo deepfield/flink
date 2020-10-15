@@ -674,6 +674,8 @@ under the License.
 								<excludes>
 									<!-- log4j 2 is bundled separately from the flink-dist jar -->
 									<exclude>org.apache.logging.log4j:*</exclude>
+									<exclude>org.apache.logging.log4j:*</exclude>
+									<exclude>ch.qos.logback:*</exclude>
 									<!-- Bundled separately so that users can easily switch between ZK 3.4/3.5-->
 									<exclude>org.apache.flink:flink-shaded-zookeeper-3</exclude>
 								</excludes>
