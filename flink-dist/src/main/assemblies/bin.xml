@@ -38,10 +38,9 @@ under the License.
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 
 			<includes>
-				<include>org.apache.logging.log4j:log4j-api</include>
-				<include>org.apache.logging.log4j:log4j-core</include>
-				<include>org.apache.logging.log4j:log4j-slf4j-impl</include>
-				<include>org.apache.logging.log4j:log4j-1.2-api</include>
+				<include>org.slf4j:log4j-over-slf4j</include>
+				<include>ch.qos.logback:logback-classic</include>
+				<include>ch.qos.logback:logback-core</include>
 			</includes>
 		</dependencySet>
 		<dependencySet>
